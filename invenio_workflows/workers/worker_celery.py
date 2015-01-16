@@ -17,6 +17,7 @@
 # along with Invenio; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
+from six import reraise
 
 from invenio.base.helpers import with_app_context
 from invenio.celery import celery
@@ -135,4 +136,9 @@ class CeleryResult(AsynchronousResultWrapper):
         if postprocess is None:
             return self.asyncresult.get()
         else:
-            return postprocess(self.asyncresult.get())
+            try:
+                result = self.asyncresult.get()
+            except Exception as e:
+                reraise(e, None, self.asyncresult.traceback)
+            else:
+                return postprocess(result)
