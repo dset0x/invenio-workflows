@@ -37,6 +37,7 @@ requirements = [
     'Flask>=0.10.1',
     'six>=1.7.2',
     'workflow>=1.2.0,<2.0.0',
+    'SQLAlchemy-Utils>=0.30.17',
 ]
 
 test_requirements = [
